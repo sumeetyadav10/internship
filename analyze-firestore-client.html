@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firestore Database Analyzer</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .collection {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            background: #f8f9fa;
+        }
+        .collection h3 {
+            margin-top: 0;
+            color: #495057;
+        }
+        .field {
+            margin: 5px 0 5px 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        .subcollection {
+            margin-left: 40px;
+            color: #6c757d;
+            font-style: italic;
+        }
+        .field-type {
+            color: #007bff;
+            font-size: 12px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+        #results {
+            margin-top: 20px;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .login-form {
+            margin: 20px 0;
+        }
+        .login-form input {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            width: 250px;
+        }
+        .download-btn {
+            background-color: #28a745;
+            margin-left: 10px;
+        }
+        .download-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Firestore Database Structure Analyzer</h1>
+        
+        <div id="status" class="status info">
+            Initializing Firebase...
+        </div>
+        
+        <div class="login-form" id="loginForm">
+            <h3>Login to Access Database</h3>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button onclick="login()">Login</button>
+        </div>
+        
+        <div id="analyzerSection" style="display: none;">
+            <button id="analyzeBtn" onclick="analyzeDatabase()">Analyze Database Structure</button>
+            <button id="downloadBtn" class="download-btn" onclick="downloadReport()" style="display: none;">Download Report</button>
+            <button onclick="logout()">Logout</button>
+        </div>
+        
+        <div id="output"></div>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        // Initialize Firebase with your config
+        const firebaseConfig = {
+            apiKey: "AIzaSyA-xwkL81ColWRTAySaaHY4Jfa7EXr4m3U",
+            authDomain: "loanmanagement-ca7e1.firebaseapp.com",
+            projectId: "loanmanagement-ca7e1",
+            storageBucket: "loanmanagement-ca7e1.firebasestorage.app",
+            messagingSenderId: "837935350316",
+            appId: "1:837935350316:web:b285a5a1359ffe1e448789",
+            measurementId: "G-QBL87TFKHE"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        
+        let globalReport = null;
+
+        // Check auth state
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('analyzerSection').style.display = 'block';
+                updateStatus(`Logged in as: ${user.email}`, 'success');
+            } else {
+                document.getElementById('loginForm').style.display = 'block';
+                document.getElementById('analyzerSection').style.display = 'none';
+                updateStatus('Please login to analyze the database', 'info');
+            }
+        });
+
+        function updateStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+        }
+
+        async function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (!email || !password) {
+                updateStatus('Please enter email and password', 'error');
+                return;
+            }
+            
+            try {
+                updateStatus('Logging in...', 'info');
+                await auth.signInWithEmailAndPassword(email, password);
+                updateStatus('Login successful!', 'success');
+            } catch (error) {
+                updateStatus(`Login failed: ${error.message}`, 'error');
+            }
+        }
+
+        async function logout() {
+            try {
+                await auth.signOut();
+                updateStatus('Logged out successfully', 'success');
+                document.getElementById('output').innerHTML = '';
+                document.getElementById('results').textContent = '';
+            } catch (error) {
+                updateStatus(`Logout failed: ${error.message}`, 'error');
+            }
+        }
+
+        async function analyzeDatabase() {
+            const button = document.getElementById('analyzeBtn');
+            button.disabled = true;
+            updateStatus('Analyzing database structure...', 'info');
+            
+            const output = document.getElementById('output');
+            const results = document.getElementById('results');
+            output.innerHTML = '';
+            results.textContent = '';
+            
+            const report = {
+                projectId: firebaseConfig.projectId,
+                analyzedAt: new Date().toISOString(),
+                analyzedBy: auth.currentUser.email,
+                collections: {},
+                totalCollections: 0,
+                totalDocuments: 0,
+                errors: []
+            };
+            
+            try {
+                // List of common collection names to check
+                const commonCollections = [
+                    'users', 'loanApplications', 'loans', 'applications',
+                    'districts', 'talukas', 'villages', 'masters',
+                    'formCounters', 'counters', 'auditLogs', 'logs',
+                    'settings', 'config', 'notifications', 'documents'
+                ];
+                
+                let foundCollections = [];
+                
+                // Try to access each collection
+                for (const collectionName of commonCollections) {
+                    try {
+                        const snapshot = await db.collection(collectionName).limit(1).get();
+                        if (!snapshot.empty || snapshot.metadata.fromCache === false) {
+                            foundCollections.push(collectionName);
+                        }
+                    } catch (error) {
+                        // Collection might not exist or no permission
+                    }
+                }
+                
+                if (foundCollections.length === 0) {
+                    // Try to get any document to find collections
+                    updateStatus('No collections found with common names. Trying alternative method...', 'info');
+                    
+                    // This is a workaround - you might need to know at least one collection name
+                    const testCollections = ['test', 'data', 'records'];
+                    for (const col of testCollections) {
+                        try {
+                            await db.collection(col).limit(1).get();
+                            foundCollections.push(col);
+                        } catch (e) {}
+                    }
+                }
+                
+                report.totalCollections = foundCollections.length;
+                output.innerHTML = `<h2>Found ${foundCollections.length} accessible collections</h2>`;
+                
+                // Analyze each found collection
+                for (const collectionName of foundCollections) {
+                    const collectionDiv = document.createElement('div');
+                    collectionDiv.className = 'collection';
+                    
+                    try {
+                        updateStatus(`Analyzing collection: ${collectionName}...`, 'info');
+                        
+                        const collectionRef = db.collection(collectionName);
+                        const snapshot = await collectionRef.limit(10).get();
+                        
+                        const collectionData = {
+                            name: collectionName,
+                            documentCount: snapshot.size,
+                            fields: new Set(),
+                            fieldTypes: {},
+                            sampleDocIds: [],
+                            subcollections: new Set()
+                        };
+                        
+                        let html = `<h3>Collection: ${collectionName}</h3>`;
+                        html += `<p>Documents analyzed: ${snapshot.size}</p>`;
+                        
+                        // Analyze documents
+                        for (const doc of snapshot.docs) {
+                            collectionData.sampleDocIds.push(doc.id);
+                            const data = doc.data();
+                            
+                            // Analyze fields
+                            analyzeFields(data, collectionData);
+                            
+                            // Try to find subcollections (this is limited in client SDK)
+                            // We'll try common subcollection names
+                            const commonSubcollections = ['history', 'logs', 'items', 'details'];
+                            for (const subName of commonSubcollections) {
+                                try {
+                                    const subSnapshot = await doc.ref.collection(subName).limit(1).get();
+                                    if (!subSnapshot.empty) {
+                                        collectionData.subcollections.add(subName);
+                                    }
+                                } catch (e) {}
+                            }
+                        }
+                        
+                        // Display fields
+                        if (collectionData.fields.size > 0) {
+                            html += '<h4>Fields:</h4>';
+                            const sortedFields = Array.from(collectionData.fields).sort();
+                            for (const field of sortedFields) {
+                                const type = collectionData.fieldTypes[field];
+                                html += `<div class="field">${field} <span class="field-type">(${type})</span></div>`;
+                            }
+                        }
+                        
+                        // Display subcollections
+                        if (collectionData.subcollections.size > 0) {
+                            html += '<h4>Subcollections:</h4>';
+                            for (const sub of collectionData.subcollections) {
+                                html += `<div class="subcollection">↳ ${sub}</div>`;
+                            }
+                        }
+                        
+                        collectionDiv.innerHTML = html;
+                        output.appendChild(collectionDiv);
+                        
+                        // Convert sets to arrays for JSON
+                        collectionData.fields = Array.from(collectionData.fields);
+                        collectionData.subcollections = Array.from(collectionData.subcollections);
+                        report.collections[collectionName] = collectionData;
+                        report.totalDocuments += collectionData.documentCount;
+                        
+                    } catch (error) {
+                        report.errors.push({
+                            collection: collectionName,
+                            error: error.message
+                        });
+                        collectionDiv.innerHTML = `<h3>Collection: ${collectionName}</h3><p class="error">Error: ${error.message}</p>`;
+                        output.appendChild(collectionDiv);
+                    }
+                }
+                
+                // Display JSON report
+                globalReport = report;
+                results.textContent = JSON.stringify(report, null, 2);
+                document.getElementById('downloadBtn').style.display = 'inline-block';
+                
+                updateStatus('Analysis complete!', 'success');
+                
+            } catch (error) {
+                updateStatus(`Analysis failed: ${error.message}`, 'error');
+                console.error('Error:', error);
+            } finally {
+                button.disabled = false;
+            }
+        }
+
+        function analyzeFields(obj, collectionData, prefix = '') {
+            for (const [key, value] of Object.entries(obj || {})) {
+                const fieldPath = prefix ? `${prefix}.${key}` : key;
+                collectionData.fields.add(fieldPath);
+                
+                const fieldType = getFieldType(value);
+                collectionData.fieldTypes[fieldPath] = fieldType;
+                
+                // Recursively analyze nested objects
+                if (fieldType === 'object' && value !== null && !Array.isArray(value) && !(value instanceof Date)) {
+                    analyzeFields(value, collectionData, fieldPath);
+                }
+            }
+        }
+
+        function getFieldType(value) {
+            if (value === null) return 'null';
+            if (value === undefined) return 'undefined';
+            if (value instanceof Date) return 'timestamp';
+            if (value && value.constructor && value.constructor.name === 'Timestamp') return 'timestamp';
+            if (value && value.constructor && value.constructor.name === 'DocumentReference') return 'reference';
+            if (Array.isArray(value)) return 'array';
+            if (typeof value === 'object') return 'object';
+            return typeof value;
+        }
+
+        function downloadReport() {
+            if (!globalReport) return;
+            
+            const dataStr = JSON.stringify(globalReport, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `firestore-analysis-${new Date().toISOString().split('T')[0]}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+        }
+        
+        // Allow Enter key to submit login
+        document.getElementById('password').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                login();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,745 @@
+{
+  "projectId": "loanmanagement-ca7e1",
+  "collections": {
+    "form_sequences": {
+      "name": "form_sequences",
+      "path": "form_sequences",
+      "documentCount": 6,
+      "documents": [
+        "20250801",
+        "20250807",
+        "20250808",
+        "20250822",
+        "20250824",
+        "20250906"
+      ],
+      "fields": [
+        "date",
+        "createdAt",
+        "updatedAt",
+        "lastNumber"
+      ],
+      "fieldTypes": {
+        "date": "timestamp",
+        "createdAt": "timestamp",
+        "updatedAt": "timestamp",
+        "lastNumber": "number"
+      },
+      "sampleDocument": {
+        "id": "20250801",
+        "data": {
+          "date": {
+            "_seconds": 1754029309,
+            "_nanoseconds": 234000000
+          },
+          "createdAt": {
+            "_seconds": 1754029309,
+            "_nanoseconds": 853000000
+          },
+          "updatedAt": {
+            "_seconds": 1754029309,
+            "_nanoseconds": 853000000
+          },
+          "lastNumber": 8
+        }
+      },
+      "subcollections": {}
+    },
+    "loan_applications": {
+      "name": "loan_applications",
+      "path": "loan_applications",
+      "documentCount": 21,
+      "documents": [
+        "LMS202508080038",
+        "LMS202508080039",
+        "LMS202508080040",
+        "LMS202508080041",
+        "LMS202508080042",
+        "LMS202508080043",
+        "LMS202508080044",
+        "LMS202508220001",
+        "LMS202508220003",
+        "LMS202508220004"
+      ],
+      "fields": [
+        "applicantDetails",
+        "applicantDetails.loanAccountNo",
+        "applicantDetails.year",
+        "applicantDetails.salutation",
+        "applicantDetails.firstName",
+        "applicantDetails.middleName",
+        "applicantDetails.lastName",
+        "applicantDetails.mobileNo",
+        "applicantDetails.email",
+        "applicantDetails.aadharNo",
+        "applicantDetails.district",
+        "applicantDetails.taluka",
+        "applicantDetails.villageCity",
+        "applicantDetails.pincode",
+        "applicantDetails.presentAddress",
+        "applicantDetails.permanentAddress",
+        "applicantDetails.sameAsPermanent",
+        "applicantDetails.industryName",
+        "applicantDetails.workingsheet",
+        "loanDetails",
+        "loanDetails.workingCapital1",
+        "loanDetails.katchaStructure1",
+        "loanDetails.machinery1",
+        "loanDetails.godown1",
+        "loanDetails.grant1",
+        "loanDetails.workingCapital2",
+        "loanDetails.katchaStructure2",
+        "loanDetails.machinery2",
+        "loanDetails.godown2",
+        "loanDetails.grant2",
+        "loanDetails.totalAmount",
+        "loanDetails.totalInWords",
+        "status",
+        "formNumber",
+        "createdBy",
+        "lastModified",
+        "timestamps",
+        "timestamps.created",
+        "timestamps.lastModified",
+        "createdAt",
+        "updatedAt",
+        "suretyDetails",
+        "suretyDetails.suretyName",
+        "suretyDetails.relation",
+        "suretyDetails.occupation",
+        "suretyDetails.designation",
+        "suretyDetails.employer",
+        "suretyDetails.workAddress",
+        "suretyDetails.email",
+        "suretyDetails.mobileNo",
+        "suretyDetails.aadharNo",
+        "suretyDetails.panNo",
+        "suretyDetails.monthlySalary",
+        "suretyDetails.otherIncome",
+        "suretyDetails.existingLiabilities",
+        "suretyDetails.propertyDetails",
+        "suretyDetails.bankName",
+        "suretyDetails.bankBranch",
+        "suretyDetails.accountNo",
+        "documents",
+        "documents.applicantPan",
+        "documents.applicantPan.url",
+        "documents.applicantPan.fileName",
+        "documents.applicantPan.uploadedAt",
+        "documents.applicantAadhar",
+        "documents.applicantAadhar.url",
+        "documents.applicantAadhar.fileName",
+        "documents.applicantAadhar.uploadedAt",
+        "documents.applicantPhoto",
+        "documents.applicantPhoto.url",
+        "documents.applicantPhoto.fileName",
+        "documents.applicantPhoto.uploadedAt",
+        "documents.incomeCertificate",
+        "documents.incomeCertificate.url",
+        "documents.incomeCertificate.fileName",
+        "documents.incomeCertificate.uploadedAt",
+        "documents.bankStatement",
+        "documents.bankStatement.url",
+        "documents.bankStatement.fileName",
+        "documents.bankStatement.uploadedAt",
+        "documents.suretyPan",
+        "documents.suretyPan.url",
+        "documents.suretyPan.fileName",
+        "documents.suretyPan.uploadedAt",
+        "documents.suretyAadhar",
+        "documents.suretyAadhar.url",
+        "documents.suretyAadhar.fileName",
+        "documents.suretyAadhar.uploadedAt",
+        "documents.suretyPhoto",
+        "documents.suretyPhoto.url",
+        "documents.suretyPhoto.fileName",
+        "documents.suretyPhoto.uploadedAt",
+        "documents.suretyIncome",
+        "documents.suretyIncome.url",
+        "documents.suretyIncome.fileName",
+        "documents.suretyIncome.uploadedAt",
+        "submittedAt",
+        "documents.businessLicense",
+        "documents.businessLicense.url",
+        "documents.businessLicense.fileName",
+        "documents.businessLicense.uploadedAt",
+        "documents.propertyPapers",
+        "documents.propertyPapers.url",
+        "documents.propertyPapers.fileName",
+        "documents.propertyPapers.uploadedAt",
+        "id",
+        "suretyDetails.residentialAddress",
+        "suretyDetails.employmentDuration",
+        "suretyDetails.bankerName",
+        "suretyDetails.suretyLoan",
+        "suretyDetails.district",
+        "suretyDetails.taluka",
+        "suretyDetails.villageCity",
+        "suretyDetails.pincode"
+      ],
+      "fieldTypes": {
+        "applicantDetails": "object",
+        "applicantDetails.loanAccountNo": "string",
+        "applicantDetails.year": "string",
+        "applicantDetails.salutation": "string",
+        "applicantDetails.firstName": "string",
+        "applicantDetails.middleName": "string",
+        "applicantDetails.lastName": "string",
+        "applicantDetails.mobileNo": "string",
+        "applicantDetails.email": "string",
+        "applicantDetails.aadharNo": "string",
+        "applicantDetails.district": "string",
+        "applicantDetails.taluka": "string",
+        "applicantDetails.villageCity": "string",
+        "applicantDetails.pincode": "string",
+        "applicantDetails.presentAddress": "string",
+        "applicantDetails.permanentAddress": "string",
+        "applicantDetails.sameAsPermanent": "boolean",
+        "applicantDetails.industryName": "string",
+        "applicantDetails.workingsheet": "string",
+        "loanDetails": "object",
+        "loanDetails.workingCapital1": "string",
+        "loanDetails.katchaStructure1": "string",
+        "loanDetails.machinery1": "string",
+        "loanDetails.godown1": "string",
+        "loanDetails.grant1": "string",
+        "loanDetails.workingCapital2": "number",
+        "loanDetails.katchaStructure2": "number",
+        "loanDetails.machinery2": "number",
+        "loanDetails.godown2": "number",
+        "loanDetails.grant2": "number",
+        "loanDetails.totalAmount": "number",
+        "loanDetails.totalInWords": "string",
+        "status": "string",
+        "formNumber": "string",
+        "createdBy": "string",
+        "lastModified": "timestamp",
+        "timestamps": "object",
+        "timestamps.created": "timestamp",
+        "timestamps.lastModified": "timestamp",
+        "createdAt": "timestamp",
+        "updatedAt": "timestamp",
+        "suretyDetails": "object",
+        "suretyDetails.suretyName": "string",
+        "suretyDetails.relation": "string",
+        "suretyDetails.occupation": "string",
+        "suretyDetails.designation": "string",
+        "suretyDetails.employer": "string",
+        "suretyDetails.workAddress": "string",
+        "suretyDetails.email": "string",
+        "suretyDetails.mobileNo": "string",
+        "suretyDetails.aadharNo": "string",
+        "suretyDetails.panNo": "string",
+        "suretyDetails.monthlySalary": "string",
+        "suretyDetails.otherIncome": "string",
+        "suretyDetails.existingLiabilities": "string",
+        "suretyDetails.propertyDetails": "string",
+        "suretyDetails.bankName": "string",
+        "suretyDetails.bankBranch": "string",
+        "suretyDetails.accountNo": "string",
+        "documents": "array",
+        "documents.applicantPan": "object",
+        "documents.applicantPan.url": "string",
+        "documents.applicantPan.fileName": "string",
+        "documents.applicantPan.uploadedAt": "timestamp",
+        "documents.applicantAadhar": "object",
+        "documents.applicantAadhar.url": "string",
+        "documents.applicantAadhar.fileName": "string",
+        "documents.applicantAadhar.uploadedAt": "timestamp",
+        "documents.applicantPhoto": "object",
+        "documents.applicantPhoto.url": "string",
+        "documents.applicantPhoto.fileName": "string",
+        "documents.applicantPhoto.uploadedAt": "timestamp",
+        "documents.incomeCertificate": "object",
+        "documents.incomeCertificate.url": "string",
+        "documents.incomeCertificate.fileName": "string",
+        "documents.incomeCertificate.uploadedAt": "timestamp",
+        "documents.bankStatement": "object",
+        "documents.bankStatement.url": "string",
+        "documents.bankStatement.fileName": "string",
+        "documents.bankStatement.uploadedAt": "timestamp",
+        "documents.suretyPan": "object",
+        "documents.suretyPan.url": "string",
+        "documents.suretyPan.fileName": "string",
+        "documents.suretyPan.uploadedAt": "timestamp",
+        "documents.suretyAadhar": "object",
+        "documents.suretyAadhar.url": "string",
+        "documents.suretyAadhar.fileName": "string",
+        "documents.suretyAadhar.uploadedAt": "timestamp",
+        "documents.suretyPhoto": "object",
+        "documents.suretyPhoto.url": "string",
+        "documents.suretyPhoto.fileName": "string",
+        "documents.suretyPhoto.uploadedAt": "timestamp",
+        "documents.suretyIncome": "object",
+        "documents.suretyIncome.url": "string",
+        "documents.suretyIncome.fileName": "string",
+        "documents.suretyIncome.uploadedAt": "timestamp",
+        "submittedAt": "timestamp",
+        "documents.businessLicense": "object",
+        "documents.businessLicense.url": "string",
+        "documents.businessLicense.fileName": "string",
+        "documents.businessLicense.uploadedAt": "timestamp",
+        "documents.propertyPapers": "object",
+        "documents.propertyPapers.url": "string",
+        "documents.propertyPapers.fileName": "string",
+        "documents.propertyPapers.uploadedAt": "timestamp",
+        "id": "string",
+        "suretyDetails.residentialAddress": "string",
+        "suretyDetails.employmentDuration": "string",
+        "suretyDetails.bankerName": "string",
+        "suretyDetails.suretyLoan": "string",
+        "suretyDetails.district": "string",
+        "suretyDetails.taluka": "string",
+        "suretyDetails.villageCity": "string",
+        "suretyDetails.pincode": "string"
+      },
+      "sampleDocument": {
+        "id": "LMS202508080038",
+        "data": {
+          "applicantDetails": {
+            "loanAccountNo": "LN2024001",
+            "year": "2024",
+            "salutation": "Mr",
+            "firstName": "Rajesh",
+            "middleName": "Kumar",
+            "lastName": "Sharma",
+            "mobileNo": "9876543210",
+            "email": "rajesh.sharma@example.com",
+            "aadharNo": "123456789012",
+            "district": "NG",
+            "taluka": "BARDEZ",
+            "villageCity": "MAPUSA",
+            "pincode": "403507",
+            "presentAddress": "123 Main Street, Near SBI Bank, Mapusa",
+            "permanentAddress": "123 Main Street, Near SBI Bank, Mapusa",
+            "sameAsPermanent": true,
+            "industryName": "Sharma Electronics",
+            "workingsheet": "Electronics Retail"
+          },
+          "loanDetails": {
+            "workingCapital1": "300000",
+            "katchaStructure1": "50000",
+            "machinery1": "150000",
+            "godown1": "0",
+            "grant1": "0",
+            "workingCapital2": "0",
+            "katchaStructure2": "0",
+            "machinery2": "0",
+            "godown2": "0",
+            "grant2": "0",
+            "totalAmount": 500000,
+            "totalInWords": "Five Lakh Rupees Only"
+          },
+          "status": "draft",
+          "formNumber": "LMS202508080038",
+          "createdBy": "KNBLDx9NyDTcA9wlGIjTAMKbFCG2",
+          "lastModified": {
+            "_seconds": 1754637393,
+            "_nanoseconds": 958000000
+          },
+          "timestamps": {
+            "created": {
+              "_seconds": 1754291793,
+              "_nanoseconds": 958000000
+            },
+            "lastModified": {
+              "_seconds": 1754637393,
+              "_nanoseconds": 958000000
+            }
+          },
+          "createdAt": {
+            "_seconds": 1754637394,
+            "_nanoseconds": 401000000
+          },
+          "updatedAt": {
+            "_seconds": 1754637394,
+            "_nanoseconds": 401000000
+          }
+        }
+      },
+      "subcollections": {}
+    },
+    "masters": {
+      "name": "masters",
+      "path": "masters",
+      "documentCount": 1,
+      "documents": [
+        "locations"
+      ],
+      "fields": [
+        "districts",
+        "talukas",
+        "villages"
+      ],
+      "fieldTypes": {
+        "districts": "array<object>",
+        "talukas": "array<object>",
+        "villages": "array<object>"
+      },
+      "sampleDocument": {
+        "id": "locations",
+        "data": {
+          "districts": [
+            {
+              "code": "NG",
+              "name": "North Goa",
+              "active": true
+            },
+            {
+              "code": "SG",
+              "name": "South Goa",
+              "active": true
+            }
+          ],
+          "talukas": [
+            {
+              "code": "TPM",
+              "name": "Tiswadi",
+              "districtCode": "NG",
+              "active": true
+            },
+            {
+              "code": "BDZ",
+              "name": "Bardez",
+              "districtCode": "NG",
+              "active": true
+            },
+            {
+              "code": "PND",
+              "name": "Ponda",
+              "districtCode": "NG",
+              "active": true
+            },
+            {
+              "code": "BCL",
+              "name": "Bicholim",
+              "districtCode": "NG",
+              "active": true
+            },
+            {
+              "code": "STP",
+              "name": "Sattari",
+              "districtCode": "NG",
+              "active": true
+            },
+            {
+              "code": "PRN",
+              "name": "Pernem",
+              "districtCode": "NG",
+              "active": true
+            },
+            {
+              "code": "CNC",
+              "name": "Canacona",
+              "districtCode": "SG",
+              "active": true
+            },
+            {
+              "code": "MRG",
+              "name": "Mormugao",
+              "districtCode": "SG",
+              "active": true
+            },
+            {
+              "code": "SLS",
+              "name": "Salcete",
+              "districtCode": "SG",
+              "active": true
+            },
+            {
+              "code": "SGM",
+              "name": "Sanguem",
+              "districtCode": "SG",
+              "active": true
+            },
+            {
+              "code": "QPN",
+              "name": "Quepem",
+              "districtCode": "SG",
+              "active": true
+            },
+            {
+              "code": "DHS",
+              "name": "Dharbandora",
+              "districtCode": "SG",
+              "active": true
+            }
+          ],
+          "villages": [
+            {
+              "code": "PNJ",
+              "name": "Panaji",
+              "districtCode": "NG",
+              "talukaCode": "TPM",
+              "pincode": "403001",
+              "active": true
+            },
+            {
+              "code": "STZ",
+              "name": "St. Cruz",
+              "districtCode": "NG",
+              "talukaCode": "TPM",
+              "pincode": "403005",
+              "active": true
+            },
+            {
+              "code": "MPM",
+              "name": "Mapusa",
+              "districtCode": "NG",
+              "talukaCode": "BDZ",
+              "pincode": "403507",
+              "active": true
+            },
+            {
+              "code": "CLG",
+              "name": "Calangute",
+              "districtCode": "NG",
+              "talukaCode": "BDZ",
+              "pincode": "403516",
+              "active": true
+            },
+            {
+              "code": "CND",
+              "name": "Candolim",
+              "districtCode": "NG",
+              "talukaCode": "BDZ",
+              "pincode": "403515",
+              "active": true
+            },
+            {
+              "code": "PND_CITY",
+              "name": "Ponda City",
+              "districtCode": "NG",
+              "talukaCode": "PND",
+              "pincode": "403401",
+              "active": true
+            },
+            {
+              "code": "VSC",
+              "name": "Vasco",
+              "districtCode": "SG",
+              "talukaCode": "MRG",
+              "pincode": "403802",
+              "active": true
+            },
+            {
+              "code": "DBO",
+              "name": "Dabolim",
+              "districtCode": "SG",
+              "talukaCode": "MRG",
+              "pincode": "403801",
+              "active": true
+            },
+            {
+              "code": "MRG_CITY",
+              "name": "Margao",
+              "districtCode": "SG",
+              "talukaCode": "SLS",
+              "pincode": "403601",
+              "active": true
+            },
+            {
+              "code": "BNL",
+              "name": "Benaulim",
+              "districtCode": "SG",
+              "talukaCode": "SLS",
+              "pincode": "403716",
+              "active": true
+            }
+          ]
+        }
+      },
+      "subcollections": {
+        "districts": {
+          "name": "districts",
+          "documentCount": 2,
+          "fields": [
+            "name",
+            "code",
+            "active",
+            "createdAt",
+            "updatedAt"
+          ],
+          "fieldTypes": {
+            "name": "string",
+            "code": "string",
+            "active": "boolean",
+            "createdAt": "timestamp",
+            "updatedAt": "timestamp"
+          },
+          "foundInDocuments": [
+            "locations"
+          ]
+        },
+        "talukas": {
+          "name": "talukas",
+          "documentCount": 12,
+          "fields": [
+            "name",
+            "code",
+            "districtCode",
+            "active",
+            "createdAt",
+            "updatedAt"
+          ],
+          "fieldTypes": {
+            "name": "string",
+            "code": "string",
+            "districtCode": "string",
+            "active": "boolean",
+            "createdAt": "timestamp",
+            "updatedAt": "timestamp"
+          },
+          "foundInDocuments": [
+            "locations"
+          ]
+        },
+        "villages": {
+          "name": "villages",
+          "documentCount": 317,
+          "fields": [
+            "name",
+            "code",
+            "talukaCode",
+            "districtCode",
+            "pincode",
+            "active",
+            "createdBy",
+            "createdAt",
+            "updatedAt"
+          ],
+          "fieldTypes": {
+            "name": "string",
+            "code": "string",
+            "talukaCode": "string",
+            "districtCode": "string",
+            "pincode": "string",
+            "active": "boolean",
+            "createdBy": "string",
+            "createdAt": "timestamp",
+            "updatedAt": "timestamp"
+          },
+          "foundInDocuments": [
+            "locations"
+          ]
+        }
+      }
+    },
+    "statistics": {
+      "name": "statistics",
+      "path": "statistics",
+      "documentCount": 1,
+      "documents": [
+        "dashboard"
+      ],
+      "fields": [
+        "totalApplications",
+        "draftApplications",
+        "submittedApplications",
+        "approvedApplications",
+        "rejectedApplications",
+        "lastUpdated",
+        "createdAt",
+        "updatedAt"
+      ],
+      "fieldTypes": {
+        "totalApplications": "number",
+        "draftApplications": "number",
+        "submittedApplications": "number",
+        "approvedApplications": "number",
+        "rejectedApplications": "number",
+        "lastUpdated": "timestamp",
+        "createdAt": "timestamp",
+        "updatedAt": "timestamp"
+      },
+      "sampleDocument": {
+        "id": "dashboard",
+        "data": {
+          "totalApplications": 0,
+          "draftApplications": 0,
+          "submittedApplications": 0,
+          "approvedApplications": 0,
+          "rejectedApplications": 0,
+          "lastUpdated": {
+            "_seconds": 1755842736,
+            "_nanoseconds": 949000000
+          },
+          "createdAt": {
+            "_seconds": 1755842736,
+            "_nanoseconds": 330000000
+          },
+          "updatedAt": {
+            "_seconds": 1755842736,
+            "_nanoseconds": 330000000
+          }
+        }
+      },
+      "subcollections": {}
+    },
+    "users": {
+      "name": "users",
+      "path": "users",
+      "documentCount": 1,
+      "documents": [
+        "KNBLDx9NyDTcA9wlGIjTAMKbFCG2"
+      ],
+      "fields": [
+        "email",
+        "createdAt",
+        "role",
+        "name",
+        "isAdmin",
+        "permissions",
+        "permissions.canAccessMasters",
+        "permissions.canManageUsers",
+        "permissions.canViewAllApplications",
+        "lastLogin",
+        "updatedAt"
+      ],
+      "fieldTypes": {
+        "email": "string",
+        "createdAt": "timestamp",
+        "role": "string",
+        "name": "string",
+        "isAdmin": "boolean",
+        "permissions": "object",
+        "permissions.canAccessMasters": "boolean",
+        "permissions.canManageUsers": "boolean",
+        "permissions.canViewAllApplications": "boolean",
+        "lastLogin": "timestamp",
+        "updatedAt": "timestamp"
+      },
+      "sampleDocument": {
+        "id": "KNBLDx9NyDTcA9wlGIjTAMKbFCG2",
+        "data": {
+          "email": "loangoa@admin.com",
+          "createdAt": {
+            "_seconds": 1755841137,
+            "_nanoseconds": 951000000
+          },
+          "role": "admin",
+          "name": "Admin User",
+          "isAdmin": true,
+          "permissions": {
+            "canAccessMasters": true,
+            "canManageUsers": true,
+            "canViewAllApplications": true
+          },
+          "lastLogin": {
+            "_seconds": 1757181262,
+            "_nanoseconds": 785000000
+          },
+          "updatedAt": {
+            "_seconds": 1757181264,
+            "_nanoseconds": 238000000
+          }
+        }
+      },
+      "subcollections": {}
+    }
+  },
+  "totalCollections": 5,
+  "totalDocuments": 30,
+  "totalSubcollections": 3,
+  "analyzedAt": "2025-09-07T06:25:52.176Z"
+}

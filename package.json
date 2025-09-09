@@ -1,0 +1,12 @@
+{
+  "name": "firestore-analyzer",
+  "version": "1.0.0",
+  "description": "Analyze Firestore database structure",
+  "main": "analyze-firestore-admin.js",
+  "scripts": {
+    "analyze": "node analyze-firestore-admin.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.0.0"
+  }
+}
