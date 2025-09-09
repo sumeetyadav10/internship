@@ -129,6 +129,7 @@ export default function EditApplicationPage() {
   
   const methods = useForm<FormData>({
     resolver: zodResolver(formSchema),
+    mode: 'onBlur',
     defaultValues: {
       applicantDetails: {
         loanAccountNo: "",
@@ -241,8 +242,11 @@ export default function EditApplicationPage() {
 
   // Submit handler
   const onSubmit = async (data: FormData) => {
+    console.log('=== UPDATE FORM SUBMISSION ===');
     console.log('Update button clicked');
-    console.log('Form data:', data);
+    console.log('Application ID:', applicationId);
+    console.log('Form data:', JSON.stringify(data, null, 2));
+    
     setIsSubmitting(true);
     try {
       toast.info("Updating your application...");
@@ -252,6 +256,7 @@ export default function EditApplicationPage() {
 
       // Keep existing documents from the application
       if (application?.documents) {
+        console.log('Existing documents:', Object.keys(application.documents));
         Object.entries(application.documents).forEach(([key, value]) => {
           if (value && typeof value === 'object') {
             documentsData[key] = value as Base64FileResult & { docType: string };
@@ -261,6 +266,7 @@ export default function EditApplicationPage() {
 
       // Process new/updated documents (already in base64 format from upload step)
       if (data.documents) {
+        console.log('New documents:', Object.keys(data.documents));
         Object.entries(data.documents).forEach(([docType, docData]) => {
           if (docData && typeof docData === 'object' && 'url' in docData) {
             // New document is already in base64 format
@@ -269,11 +275,28 @@ export default function EditApplicationPage() {
         });
       }
       
-      console.log('Documents data for update:', documentsData);
+      console.log('Documents data for update:', Object.keys(documentsData));
+
+      // Convert loan detail string values to numbers
+      const loanDetails = {
+        ...data.loanDetails,
+        workingCapital1: Number(data.loanDetails.workingCapital1) || 0,
+        workingCapital2: Number(data.loanDetails.workingCapital2) || 0,
+        katchaStructure1: Number(data.loanDetails.katchaStructure1) || 0,
+        katchaStructure2: Number(data.loanDetails.katchaStructure2) || 0,
+        machinery1: Number(data.loanDetails.machinery1) || 0,
+        machinery2: Number(data.loanDetails.machinery2) || 0,
+        godown1: Number(data.loanDetails.godown1) || 0,
+        godown2: Number(data.loanDetails.godown2) || 0,
+        grant1: Number(data.loanDetails.grant1) || 0,
+        grant2: Number(data.loanDetails.grant2) || 0,
+        totalAmount: Number(data.loanDetails.totalAmount) || 0,
+        totalInWords: data.loanDetails.totalInWords || ""
+      };
 
       const updateData = {
         applicantDetails: data.applicantDetails,
-        loanDetails: data.loanDetails,
+        loanDetails: loanDetails,
         suretyDetails: {
           ...data.suretyDetails,
           // Add default values for missing fields
@@ -290,15 +313,20 @@ export default function EditApplicationPage() {
         updatedAt: new Date().toISOString()
       };
       
-      console.log('Update data:', updateData);
+      console.log('Update data being sent:', JSON.stringify(updateData, null, 2));
+      console.log('Calling updateLoanApplication with ID:', applicationId);
 
       await updateLoanApplication(applicationId, updateData);
       
+      console.log('Update successful!');
       toast.success("Application updated successfully!");
       router.push(`/dashboard/applications/${applicationId}`);
     } catch (error: any) {
-      console.error("Error updating application:", error);
-      toast.error("Failed to update application. Please try again.");
+      console.error("=== UPDATE ERROR ===");
+      console.error("Error details:", error);
+      console.error("Error message:", error.message);
+      console.error("Error stack:", error.stack);
+      toast.error(error.message || "Failed to update application. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -719,7 +747,12 @@ export default function EditApplicationPage() {
         
         <div className="form-content">
           <FormProvider {...methods}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={(e) => {
+              console.log('Form submit event triggered');
+              console.log('Form errors:', methods.formState.errors);
+              console.log('Form is valid:', methods.formState.isValid);
+              handleSubmit(onSubmit)(e);
+            }}>
               <AnimatePresence mode="wait">
                 {currentStep === 0 && (
                   <motion.div
@@ -786,7 +819,12 @@ export default function EditApplicationPage() {
                     Save & Next
                   </button>
                 ) : (
-                  <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+                  <button 
+                    type="submit" 
+                    className="btn btn-primary" 
+                    disabled={isSubmitting}
+                    onClick={() => console.log('Update button clicked directly')}
+                  >
                     {isSubmitting ? (
                       <>
                         Updating
