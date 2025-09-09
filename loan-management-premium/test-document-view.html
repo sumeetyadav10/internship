@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Document Viewer Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .container {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .image-preview {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .image-preview img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .download-btn {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .download-btn:hover {
+            background: #45a049;
+        }
+        .info {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Document Viewer Test</h1>
+        <div class="info">
+            <p>This page demonstrates that the base64-encoded document stored in Firestore can be:</p>
+            <ul>
+                <li>✅ Viewed in the browser</li>
+                <li>✅ Downloaded to your computer</li>
+            </ul>
+        </div>
+        
+        <h2>Document Preview:</h2>
+        <div class="image-preview">
+            <p>Loading document...</p>
+        </div>
+        
+        <button class="download-btn" onclick="downloadDocument()" style="display:none;">
+            Download Document
+        </button>
+    </div>
+
+    <script>
+        // This simulates getting the document data from Firestore
+        // In your actual app, this would come from your Firebase query
+        async function loadDocument() {
+            // Simulating the document data structure from Firestore
+            const documentData = {
+                fileName: "WhatsApp Image 2025-08-23 at 22.07.33.jpeg",
+                fileType: "image/jpeg",
+                url: "" // This would be the actual base64 data URL from Firestore
+            };
+
+            // In real app, you'd fetch this from Firestore
+            // For testing, you'd need to manually paste the base64 URL here or fetch it
+            const infoText = `
+                <p><strong>To test this viewer:</strong></p>
+                <ol>
+                    <li>Run the test upload: <code>./quick-test.sh</code></li>
+                    <li>Copy the base64 URL from Firestore</li>
+                    <li>Open this HTML file and paste the URL in the console</li>
+                    <li>Or integrate this code in your React app to fetch from Firestore</li>
+                </ol>
+                <p>The document is stored as base64 in Firestore and can be displayed directly!</p>
+            `;
+            
+            document.querySelector('.image-preview').innerHTML = infoText;
+        }
+
+        function displayDocument(base64Url, fileName) {
+            const preview = document.querySelector('.image-preview');
+            const downloadBtn = document.querySelector('.download-btn');
+            
+            if (base64Url.startsWith('data:image')) {
+                preview.innerHTML = `<img src="${base64Url}" alt="${fileName}">`;
+            } else if (base64Url.startsWith('data:application/pdf')) {
+                preview.innerHTML = `
+                    <embed src="${base64Url}" type="application/pdf" width="100%" height="600px">
+                    <p>If PDF doesn't display, click download button below.</p>
+                `;
+            }
+            
+            // Store for download
+            window.documentData = { url: base64Url, fileName: fileName };
+            downloadBtn.style.display = 'inline-block';
+        }
+
+        function downloadDocument() {
+            if (!window.documentData) return;
+            
+            const link = document.createElement('a');
+            link.href = window.documentData.url;
+            link.download = window.documentData.fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Load document on page load
+        loadDocument();
+
+        // Example: To test with actual data, paste this in console with real base64 URL:
+        // displayDocument('data:image/jpeg;base64,YOUR_BASE64_HERE', 'test.jpg');
+    </script>
+</body>
+</html>
